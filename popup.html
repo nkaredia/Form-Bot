@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Form Bot</title>
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  background-color: whitesmoke;
+  width: 350px;
+  height: auto;
+}
+
+header {
+  height: 50px;
+  background-color: dodgerblue;
+}
+
+.section {
+  height: 400px;
+}
+
+footer {
+  border-top: 1px solid dodgerblue;
+  height: 20px;
+}
+
+
+.buttons {
+  height: 35px;
+  bottom: 25px;
+  position: absolute;
+}
+
+.button {
+  height: 35px;
+  width: 200px;
+  border: none;
+  background-color: dodgerblue;
+  font-size: 18px;
+  color: #333;
+  font-family: sans-serif;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.save-discard-button-container {
+  margin-top: 20px;
+  height: 30px;
+}
+
+.save-button {
+  height: inherit;
+  margin-left: 0px;
+  width: 79px;
+  border: 1px solid dodgerblue;
+  background-color: dodgerblue;
+  font-size: 18px;
+  color: #333;
+  font-family: sans-serif;
+  cursor: pointer;
+  margin-left: 100px;
+}
+
+  .save-button:hover {
+      background-color: #1873cc;
+  }
+
+.discard-button {
+  height: inherit;
+  margin-left: 0px;
+  width: 79px;
+  border: 1px solid dodgerblue;
+  background-color: dodgerblue;
+  font-size: 18px;
+  color: #333;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+  .discard-button:hover {
+      background-color: #1873cc;
+  }
+
+.fill-section {
+  height: 200px;
+  width: 100%;
+  border-bottom: 1px solid dodgerblue;
+}
+
+.read-section {
+  min-height: 100px;
+  width: 100%;
+}
+
+.hvr-grow {
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  backface-visibility: hidden;
+  transition-duration: 0.3s;
+  transition-property: transform;
+}
+
+  .hvr-grow:hover,
+  .hvr-grow:active {
+      transform: scale(1.1);
+  }
+
+.input-name {
+  width: 100%;
+  border: 0.5px solid transparent;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  font-size: 17px;
+  outline: none;
+}
+
+.input-div {
+  border: 1px solid dodgerblue;
+  height: 35px;
+  margin-top: 20px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error {
+  border-color: red;
+}
+
+  .error:focus {
+      outline: none;
+  }
+
+.textarea {
+  width: 80%;
+  outline: none;
+  height: 30px;
+  margin-top: 10px;
+  margin-left: 10%;
+}
+
+.er {
+  background-color: red;
+}
+
+.disabled {
+  background-color: #777;
+  cursor: default;
+}
+
+  .disabled:hover {
+      background-color: #777;
+      cursor: default;
+  }
+
+.console-container-nav {
+  height: 25px;
+  max-height: 170px;
+  margin-top: 15px;
+  /*box-shadow: 2px 0px 10px #777 inset;*/
+  display: flex;
+  background-color: dodgerblue;
+}
+
+.ccn-text {
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.ccn-button {
+  margin-left: 80%;
+  width: 25px;
+  /* background-image: url('glyphicons-601-chevron-up.png');
+  background-color: transparent;
+  border: none;
+  background-repeat: no-repeat;*/
+  background-color: transparent;
+  border: none;
+  border-radius: 100%;
+  outline: none;
+  /*-webkit-transition: -webkit-transform 0.1s linear;*/
+  cursor: pointer;
+}
+
+  .ccn-button img {
+      margin-left: -4.5px;
+  }
+
+  .ccn-button svg{
+      margin-left: -5px;
+      margin-top: 0;
+      width: 35px;
+      height: 100%;
+
+  }
+
+.console-div {
+  border-bottom: 1px solid dodgerblue;
+  border-left: 1px solid dodgerblue;
+  border-right: 1px solid dodgerblue;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.console {
+  height: 0px;
+  background-color: whitesmoke;
+  margin-top: 0px;
+}
+    </style>
+  </head>
+  <body>
+    <header></header>
+    <section class="section">
+        <section class="fill-section"></section>
+        <section class="read-section">
+            <button id="read-button" class="button hvr-grow" style="margin-left: 75px;">Read</button>
+            <!--<div class="textarea">
+
+            </div>
+            <div class="input-div">
+                <input type="text" name="form-input-name" min="3" class="input-name" />
+                <button class="save-button">Save</button>
+            </div>-->
+
+            <div class="input-div">
+                <input type="text" name="form-input-name" class="input-name" disabled />
+            </div>
+            <div class="save-discard-button-container">
+                <button class="save-button disabled" disabled>Save</button>
+                <button class="discard-button disabled" disabled>Discard</button>
+            </div>
+            <div class="console-div">
+                <div class="console-container-nav">
+                    <div class="ccn-text">text</div>
+                    <button class="ccn-button" id="arrow">
+                     <!--<img src="glyphicons-601-chevron-up.png" />-->
+                        <svg>
+                            <line x1="0" y1="7"stroke-width="2" x2="12" y2="16" style="stroke: black;"></line>
+                            <line x1="12" y1="16"stroke-width="2" x2="23" y2="7" style="stroke: black;"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="console" id="console"></div>
+            </div>
+
+        </section>
+    </section>
+    <script type="text/javascript" src="Js/popup.js"></script>
+  </body>
+</html>
