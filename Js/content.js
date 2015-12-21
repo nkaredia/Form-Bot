@@ -4,11 +4,11 @@
 chrome.runtime.onMessage.addListener(function(request,sender,sr){
 	if(request.message == "read"){
 		var input = $(":input");
+		console.log(input);
 		var msg = [];
 		for(var i=0;i<input.length;i++){
-			console.log(input[i].outerHTML);
-			msg.push(input[i].outerHTML + "-form_bot-delimit-");
+			console.log(input[i]);
 		}
-		console.log(msg.toString());
+		//console.log(msg.toString());
 	}
 });
