@@ -7,7 +7,8 @@ chrome.runtime.onMessage.addListener(function(request,sender,sr){
 		console.log(input);
 		var msg = [];
 		for(var i=0;i<input.length;i++){
-			console.log(input[i]);
+            $(input[i]).attr("value",$(input[i]).val());
+            			console.log(input[i]);
 		}
 		//console.log(msg.toString());
 	}
