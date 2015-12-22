@@ -20,8 +20,11 @@ chrome.runtime.onMessage.addListener(function (request, sender, sr) {
                 $(input[i]).attr("value", $(input[i]).val());
                 console.log(input[i]);
             }
+            msg.push($(input[i])[0].outerHTML);
         }
+        console.log(msg);
         //console.log(msg.toString());
+        sr({message: msg});
     }
 });
 function isToggleInput(i) {

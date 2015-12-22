@@ -6,6 +6,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                     chrome.tabs.sendMessage(tabs[0].id, { message: "read" }, function (response) {
                         console.log(response);
+                        port.postMessage(response);
                     });
                 });
             }
