@@ -15,7 +15,7 @@
   ],
 
   "background": {
-    "scripts": ["Js/background.js"]
+    "scripts": ["Js/jquery.min.js","Js/background.js"]
   },
   "permissions": [
     "background",
