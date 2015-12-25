@@ -122,7 +122,7 @@ header {
         }
 
     .bottom-section > div:last-child > div:last-child {
-        height: 0px;
+        height: 150px;
         overflow-x: hidden;
         overflow-y: auto;
         margin-top: 0px;

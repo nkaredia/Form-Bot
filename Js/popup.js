@@ -10,5 +10,8 @@ document.getElementById('read-button').addEventListener("click",function(){
 });
 
 port.onMessage.addListener(function(msg){
+    if(msg != "false"){
+        $(".data-display").html(msg);
+    }
 	console.log(msg);
 });
