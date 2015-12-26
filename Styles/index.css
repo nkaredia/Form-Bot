@@ -4,6 +4,7 @@ body {
     background-color: whitesmoke;
     height: auto;
     width: 350px;
+    color: #000;
 }
 
 header {
@@ -133,7 +134,7 @@ header {
             padding-top: 5px;
             padding-bottom: 5px;
             padding-left: 5px;
-            color: #333;
+            color: #000;
         }
 
             .bottom-section > div:last-child > div:last-child > div:nth-child(odd) {
