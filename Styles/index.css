@@ -155,3 +155,12 @@ header {
                 height: 100%;
                 word-wrap: break-word;
             }
+
+.red + .tooltip > .tooltip-inner {background-color: #D91E18;}
+.red + .tooltip > .tooltip-arrow { border-bottom-color:#D91E18; }
+
+.green + .tooltip > .tooltip-inner {background-color: #2ecc71;}
+.green + .tooltip > .tooltip-arrow { border-bottom-color:#2ecc71; }
+
+.orange + .tooltip > .tooltip-inner {background-color: #e67e22;}
+.orange + .tooltip > .tooltip-arrow { border-bottom-color:#e67e22; }
