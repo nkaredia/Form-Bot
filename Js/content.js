@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sr) {
     if (request.message == "read") {
         var _position_id = 0;
         var msg = [];
-        var input = $(queryString).filter(function(){
+        $(queryString).filter(function(){
            // console.log($(this));
             var bool = false;
             if($(this)[0].type == "checkbox" || $(this)[0].type == "radio"){
