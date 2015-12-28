@@ -9,20 +9,16 @@ $(document).ready(function(){
    
    var hasData = false;
 
+
+
+
 document.getElementById('read-button').addEventListener("click",function(){
 	port.postMessage("read");
 });
 
 port.onMessage.addListener(function(msg){
     var that = $(".read-container");
-    if(msg != "false"){       
-        $(".data-display").html(msg);
-        $(that).addClass("orange");
-        $(that).attr("data-original-title", "Give a name to your form data");
-        that.tooltip({trigger: 'manual'}).tooltip('enable').tooltip('show');
-        hasData = true;
-    }else{
-
+    if(msg == "false"){       
         $(that).addClass("red");
         $(that).attr("data-original-title", "No data found on this page");
 
@@ -32,6 +28,14 @@ port.onMessage.addListener(function(msg){
             $(that).removeClass("red");
             $(that).attr("data-original-title", "");
         }, 3000);
+    }else if("string" == typeof(msg)){
+        $(".data-display").html(msg);
+        $(that).addClass("orange");
+        $(that).attr("data-original-title", "Give a name to your form data");
+        that.tooltip({trigger: 'manual'}).tooltip('enable').tooltip('show');
+        $("#data-name").attr("placeholder", "Name of your data");
+        $("#data-name").val("");
+        hasData = true;
     }
 	console.log(msg);
 }); 
@@ -42,6 +46,7 @@ $(".save,.discard").on('click',function(event){
         $(that).addClass("red");
         $(that).attr("data-original-title", "No data to "+$(this).html());
 
+   
         that.tooltip({trigger: 'manual'}).tooltip('enable').tooltip('show');
         setTimeout(function() {
             that.tooltip({trigger: 'manual'}).tooltip('disable').tooltip('hide');
