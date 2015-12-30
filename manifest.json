@@ -18,6 +18,7 @@
     "scripts": ["Js/jquery.min.js","Js/background.js"]
   },
   "permissions": [
+    "storage",
     "background",
     "activeTab",
     "tabs",

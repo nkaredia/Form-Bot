@@ -50,7 +50,9 @@ $(document).ready(function () {
                         setError($(".read-container"), "Please name your data before saving", 3000);
                     }
                 }else{
-                    
+                    var m = "save";
+                    m+= $("#data-name").val();
+                    port.postMessage(m);
                 }
             }
             else if (that.hasClass("discard")) {

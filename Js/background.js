@@ -20,6 +20,27 @@ chrome.runtime.onConnect.addListener(function (port) {
                     });
                 });
             }
+            else if(_message.toString().startsWith("save")){
+                var m = _message.toString().slice(4,_message.toString().length);
+               
+               
+               /*
+                chrome storage error
+               */ 
+               
+                        chrome.storage.StorageArea.set({m:response_data});
+                        chrome.storage.StorageArea.get(m,function(d){
+                            console.log(d);
+                    
+                    
+            /*
+                chrome storage error
+            */
+                });
+            }
+        });
+        port.onDisconnect.addListener(function(){
+            response_data = [];
         });
     }
 });
