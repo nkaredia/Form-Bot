@@ -31,6 +31,9 @@ $(document).ready(function () {
             $("#data-name").val("");
             hasData = true;
         }
+        else if(msg.toString().endsWith("saved")){
+            
+        }
         console.log(msg);
     });
 

@@ -29,6 +29,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                             console.log(d);                           
                         });                       
                         chrome.storage.local.remove(_key);
+                        port.postMessage(_key+" saved");
             }
         });
         port.onDisconnect.addListener(function(){
