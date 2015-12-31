@@ -1,6 +1,6 @@
 /// <reference path="../Typings/chrome.d.ts" />
 /// <reference path="../Typings/jquery/jquery.d.ts" />
-var inputTypes = ["text","number","checkbox","radio","date","color","range","month","week","time","datetime","datetime-local","email","search","tel","url"];
+//var inputTypes = ["text","number","checkbox","radio","date","color","range","month","week","time","datetime","datetime-local","email","search","tel","url"];
 var response_data = [];
 chrome.runtime.onConnect.addListener(function (port) {
     if (port.name == "readPort") {
@@ -21,22 +21,14 @@ chrome.runtime.onConnect.addListener(function (port) {
                 });
             }
             else if(_message.toString().startsWith("save")){
-                var m = _message.toString().slice(4,_message.toString().length);
-               
-               
-               /*
-                chrome storage error
-               */ 
-               
-                        chrome.storage.StorageArea.set({m:response_data});
-                        chrome.storage.StorageArea.get(m,function(d){
-                            console.log(d);
-                    
-                    
-            /*
-                chrome storage error
-            */
-                });
+                var _key = _message.toString().slice(4,_message.toString().length);
+                var obj = {};
+                obj[_key] = response_data;
+                        chrome.storage.local.set(obj);                       
+                        chrome.storage.local.get(function(d){
+                            console.log(d);                           
+                        });                       
+                        chrome.storage.local.remove(_key);
             }
         });
         port.onDisconnect.addListener(function(){
