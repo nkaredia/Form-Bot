@@ -164,3 +164,35 @@ header {
 
 .orange + .tooltip > .tooltip-inner {background-color: #e67e22;}
 .orange + .tooltip > .tooltip-arrow { border-bottom-color:#e67e22; }
+
+        .chosen-container{
+            width: 90%;
+            margin-left: 5%;
+            margin-top: 10px;
+            border-color: dodgerblue;
+            background: dodgerblue;
+        }
+        .chosen-container-single .chosen-single {
+            position: relative;
+            display: block;
+            overflow: hidden;
+            background-color: dodgerblue;
+            color: #444;
+            text-decoration: none;
+            white-space: nowrap;
+            line-height: 24px;
+            background: none;
+            border-radius: 0px;
+            box-shadow: none;
+            border: 1px solid dodgerblue;
+            height: 30px;
+           
+        }
+        
+        .chosen-container-active.chosen-with-drop .chosen-single{
+            background-image: none;
+            border-bottom-right-radius:0px;
+            border-bottom-left-radius: 0px;
+            border: 0px solid transparent;
+            margin-top: 0px;
+        }

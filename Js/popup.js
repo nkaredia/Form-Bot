@@ -68,6 +68,9 @@ $(document).ready(function () {
 
 });
 
+$(".chosen-select").chosen();
+$(".chosen-container").removeAttr("style");
+
 function setError(element, errMessage, errDuration) {
     $(element).addClass("red");
     $(element).attr("data-original-title", errMessage);
