@@ -68,8 +68,15 @@ $(document).ready(function () {
 
 });
 
-$(".chosen-select").chosen();
-$(".chosen-container").removeAttr("style");
+$('select').select2();
+$('.select2').removeAttr("style");
+
+$(".select2").on("click",function(){
+   
+    $('.select2-results__options').perfectScrollbar();
+        $('.select2-results__options').perfectScrollbar();
+        $('.select2-results__options').perfectScrollbar("update");
+});
 
 function setError(element, errMessage, errDuration) {
     $(element).addClass("red");

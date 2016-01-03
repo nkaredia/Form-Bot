@@ -5,6 +5,7 @@ body {
     height: auto;
     width: 350px;
     color: #000;
+    font-family: cursive;
 }
 
 header {
@@ -165,6 +166,12 @@ header {
 .orange + .tooltip > .tooltip-inner {background-color: #e67e22;}
 .orange + .tooltip > .tooltip-arrow { border-bottom-color:#e67e22; }
 
+.select2{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10px;
+}
+
 .select2-container--default .select2-selection--single{
     border-radius: 0px;
     border: 1px solid #D64541;
@@ -201,4 +208,8 @@ header {
 
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b{
     border-color: transparent transparent black transparent;
+}
+
+.select2-container--default .select2-results>.select2-results__options{
+    position: relative;
 }
