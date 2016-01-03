@@ -1,9 +1,10 @@
-/// <reference path="./Typings/jquery/jquery.d.ts"/>
-/// <reference path="./Typings/chosen.jquery.d.ts"/>
+/// <reference path="Typings/jquery/jquery.d.ts" />
+/// <reference path="Typings/select2/select2.d.ts" />
 
-$(document).ready(function(){
-    console.log("sdsf");   
-    $(".chosen-select").chosen();
-    console.log($(".chosen-container").removeAttr("style"));
-    
+$('select').select2();
+
+$(".select2").on("click",function(){
+   
+    $('.select2-results__options').perfectScrollbar();
+  //  $('.select2-results__options').perfectScrollbar("update");
 });

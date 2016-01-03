@@ -2,32 +2,52 @@
 
 <head>
     <script type="text/javascript" src="Js/jquery.min.js"></script>
-    <script src="Js/chosen.jquery.js"></script>
-    <link rel="stylesheet" href="Styles/chosen.min.css">
+    <script src="Js/select2.min.js"></script>
+    <script src="Js/perfect-scrollbar.jquery.js"></script>
+    <link rel="stylesheet" href="Styles/select2.min.css">
+    <link rel="stylesheet" href="Styles/perfect-scrollbar.min.css">
     <style>
-        .chosen-container{
-            width: 90%;
-        }
-        .chosen-container-single .chosen-single {
-            position: relative;
-            display: block;
-            overflow: hidden;
-            background-color: whitesmoke;
-            color: #444;
-            text-decoration: none;
-            white-space: nowrap;
-            line-height: 24px;
-            background: none;
-            border-radius: 0px;
-            box-shadow: none;
-        }
-        
-        .chosen-container-active.chosen-with-drop .chosen-single{
-            background-image: none;
-            border-bottom-right-radius:0px;
-            border-bottom-left-radius: 0px;
-            border: 1px solid #444;
-        }
+.select2-container--default .select2-selection--single{
+    border-radius: 0px;
+    border: 1px solid #D64541;
+    outline: none;
+    font-family: cursive;
+    background-color: #D64541;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field{
+    border: 1px solid #D64541;
+    outline: none;
+}
+
+.select2-dropdown{
+    border-radius: 0px;
+    border: 1px solid #D64541;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected]{
+    background-color: #D64541;
+}
+
+.select2-container{
+    font-family: cursive;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder{
+    color:#444;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b{
+    border-color: black transparent transparent transparent;
+}
+
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b{
+    border-color: transparent transparent black transparent;
+}
+
+.select2-container--default .select2-results>.select2-results__options{
+    position: relative;
+}
     </style>
 </head>
 
