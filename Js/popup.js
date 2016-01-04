@@ -31,8 +31,8 @@ $(document).ready(function () {
             $("#data-name").val("");
             hasData = true;
         }
-        else if(msg.toString().endsWith("saved")){
-            
+        else if (msg.toString().endsWith("saved")) {
+
         }
         console.log(msg);
     });
@@ -52,15 +52,15 @@ $(document).ready(function () {
                         $(".read-container").removeClass("orange");
                         setError($(".read-container"), "Please name your data before saving", 3000);
                     }
-                }else{
+                } else {
                     var m = "save";
-                    m+= $("#data-name").val();
+                    m += $("#data-name").val();
                     port.postMessage(m);
                 }
             }
             else if (that.hasClass("discard")) {
                 if ($("#data-name").val() === "") {
-                    
+
                 }
             }
         }
@@ -71,12 +71,25 @@ $(document).ready(function () {
 $('select').select2();
 $('.select2').removeAttr("style");
 
-$(".select2").on("click",function(){
-   
+$(".select2").on("click", function () {
+
     $('.select2-results__options').perfectScrollbar();
-        $('.select2-results__options').perfectScrollbar();
-        $('.select2-results__options').perfectScrollbar("update");
+    $('.select2-results__options').perfectScrollbar();
+    $('.select2-results__options').perfectScrollbar("update");
 });
+
+$(".color").on("click", function () {
+    if ($(this).hasClass("cg-blue")) {
+        changeColor("#2C82C9");
+    }
+    else if($(this).hasClass("cg-green")){
+        changeColor("#2ecc71");
+    }
+    else if($(this).hasClass("cg-red")){
+        changeColor("#D64541");
+    }
+});
+
 
 function setError(element, errMessage, errDuration) {
     $(element).addClass("red");
@@ -90,4 +103,74 @@ function setError(element, errMessage, errDuration) {
         $(element).attr("data-original-title", "");
         $(element).blur();
     }, errDuration);
+}
+
+function changeColor(color) {
+    var cssStr = `header
+         {
+            background-color: `+ color + `;
+         }
+
+       .bottom-section {
+            border-top: 1px solid `+ color + `;
+        }
+
+        .bottom-section > div:first-child {
+            border: 1px solid `+ color + `;
+        }
+
+        .bottom-section > div:first-child > button {
+            background-color: `+ color + `;
+        }
+
+        .bottom-section > .middle > button {
+            background-color: `+ color + `;
+        }
+
+        .bottom-section > div:last-child {
+            border: 1px solid `+ color + `;
+        }
+
+        .bottom-section > div:last-child > div:first-child {
+            background-color: `+ color + `;
+        }
+
+        .bottom-section > div:last-child > div:first-child > button {
+            background-color: `+ color + `;
+        }
+
+        .select2-container--default .select2-selection--single{
+            border: 1px solid `+ color + `;
+            background-color: `+ color + `;
+        }
+
+        .select2-container--default .select2-search--dropdown .select2-search__field{
+            border: 1px solid `+ color + `;
+        }
+
+        .select2-dropdown{
+            border: 1px solid `+ color + `;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected]{
+            background-color: `+ color + `;
+}
+
+        `;
+
+    var head = document.head || document.getElementsByTagName('head')[0];
+    var style = head.getElementsByTagName("style")[0];
+
+
+    style.type = 'text/css';
+    if (style.styleSheet) {
+        $(style).html("");
+        style.styleSheet.cssText = cssStr;
+    } else {
+        $(style).html("");
+        style.appendChild(document.createTextNode(cssStr));
+    }
+
+    // head.appendChild(style);
+
 }
