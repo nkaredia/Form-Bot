@@ -21,6 +21,7 @@ chrome.runtime.onConnect.addListener(function (port) {
                 });
             }
             else if(_message.toString().startsWith("save")){
+                console.log(_message);
                 var _key = _message.toString().slice(4,_message.toString().length);
                 var obj = {};
                 obj[_key] = response_data;
@@ -28,8 +29,19 @@ chrome.runtime.onConnect.addListener(function (port) {
                         chrome.storage.local.get(function(d){
                             console.log(d);                           
                         });                       
-                        chrome.storage.local.remove(_key);
-                        port.postMessage(_key+" saved");
+                      //  chrome.storage.local.remove(_key);
+                        port.postMessage("saved"+_key);
+            }
+            else if(_message.toString() == "getData"){
+                var dom = "";
+                var option = "";
+                chrome.storage.local.get(function(data){
+                    for(var key in data){
+                        option = '<option value="'+key+'">'+key+'</option>';
+                        dom+=option;
+                    }
+                    port.postMessage("drop-data"+dom);
+                });     
             }
         });
         port.onDisconnect.addListener(function(){
