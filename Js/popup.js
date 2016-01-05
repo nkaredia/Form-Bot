@@ -1,6 +1,7 @@
 /// <reference path="../Typings/chrome.d.ts" />
 /// <reference path="../Typings/chrome/chrome-app.d.ts" />
 /// <reference path="../Typings/chrome/chrome-cast.d.ts" />
+/// <reference path="./bootstrap-dialog.min.js" />
 
 var openDisplay = false, d = -180, h = 0;
 var $selection = $(
@@ -26,7 +27,7 @@ $(document).ready(function () {
     port.postMessage("getData");
     var hasData = false;
     document.getElementById('read-button').addEventListener("click", function () {
-        
+
         port.postMessage("read");
     });
 
@@ -49,6 +50,11 @@ $(document).ready(function () {
         } else if (msg.toString().startsWith("drop-data")) {
             var s = msg.toString().slice(9, msg.toString().length);
             $(".dt-select").append(s);
+            $("select").select2("val", null);
+        }
+        else if (msg.toString().startsWith("removed")) {
+            var s = msg.toString().slice(7, msg.toString().length);
+
         }
         else if ("string" == typeof (msg)) {
             $(".data-display").html(msg);
@@ -95,28 +101,74 @@ $(document).ready(function () {
 
 
 
-
+    $(".remove-data").click(function (e) {
+        e.preventDefault();
+        BootstrapDialog.show({
+            message: 'Hi Apple!',
+            buttons: [{
+                label: 'Button 1'
+            }, {
+                    label: 'Button 2',
+                    cssClass: 'btn-primary',
+                    action: function () {
+                        alert('Hi Orange!');
+                    }
+                }, {
+                    icon: 'glyphicon glyphicon-ban-circle',
+                    label: 'Button 3',
+                    cssClass: 'btn-warning'
+                }, {
+                    label: 'Close',
+                    action: function (dialogItself) {
+                        dialogItself.close();
+                    }
+                }]
+        });
+        //  var id = $(this).html();
+        //  port.postMessage("remove" + id.toString());
+    });
 
 });
 
+function formatState(state) {
+    /*  console.log(state);
+      if (!state.id) { return state.text }
+        return `<span>` + state.text + `
+               <button class="remove-data glyphicon glyphicon-remove"></button>
+          </span>`;*/
 
-$('select').select2({
+    if (!state.id) return state.text; // optgroup
+        return state.text + '<button class="remove-data glyphicon glyphicon-remove"></button>';
+}
+var select2 = $('select').select2({
+    placeholder: "Choose to insert...",
     templateResult: formatState,
-    closeOnSelect: false
-});
-$(".remove-data").click(function(e){
-    e.preventDefault();
-});
+    templateSelection: formatState,
+    formatSelection: formatState,
+    formatResult: formatState,
+    closeOnSelect: false,
+    escapeMarkup: function (m) { return m; }
+}).data('select2');
+select2.onSelect = (function (fn) {
+    return function (data, options) {
+        var target;
 
-$(".remove-data").hover(function(){
-    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('enable').tooltip('show');
-},function(){
-    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
-});
+        if (options != null) {
+            target = $(options.target);
+        }
+
+        if (target && target.hasClass('remove-data')) {
+            alert('click!');
+        } else {
+            return fn.apply(this, arguments);
+        }
+    }
+})(select2.onSelect);
 
 
 $('.select2').removeAttr("style");
 $(".select2").on("click", function () {
+
     console.log("fired");
     /*setTimeout(function() {
         $(".ps-container").css("hidden !important");
@@ -124,8 +176,17 @@ $(".select2").on("click", function () {
     //$(".ps-container").css("hidden !important");
     $('.select2-results__options').perfectScrollbar();
     $('.select2-results__options').perfectScrollbar("update");
-    
 });
+
+
+
+$(".remove-data").hover(function () {
+    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('enable').tooltip('show');
+}, function () {
+    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
+});
+
+
 
 $(".color").on("click", function () {
     var color;
@@ -158,18 +219,32 @@ $("#arrow").click(function () {
     openDisplay = !openDisplay;
 });
 
-function formatState(state) {
-    console.log(state);
-    if (!state.id) { return state.text }
-    var $state = $(
-        `<span>` + state.text + `
-             <button class="remove-data glyphicon glyphicon-remove"></button>
-        </span>`
-        );
-    return $state;
+
+
+function removeData(key) {
+    e.preventDefault();
+    BootstrapDialog.show({
+        message: 'Hi Apple!',
+        buttons: [{
+            label: 'Button 1'
+        }, {
+                label: 'Button 2',
+                cssClass: 'btn-primary',
+                action: function () {
+                    alert('Hi Orange!');
+                }
+            }, {
+                icon: 'glyphicon glyphicon-ban-circle',
+                label: 'Button 3',
+                cssClass: 'btn-warning'
+            }, {
+                label: 'Close',
+                action: function (dialogItself) {
+                    dialogItself.close();
+                }
+            }]
+    });
 }
-
-
 function setError(element, errMessage, errDuration) {
     $(element).addClass("red");
     $(element).attr("data-original-title", errMessage);
