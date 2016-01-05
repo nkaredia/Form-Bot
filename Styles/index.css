@@ -213,6 +213,7 @@ header {
 .select2-container--default .select2-results>.select2-results__options{
     position: relative;
     max-height: 150px;
+    overflow: hidden !important;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered{
@@ -252,4 +253,6 @@ header {
     background-color: transparent;
     border:none;
     float: right;
+    right: 15px;
+    outline:none;
 }

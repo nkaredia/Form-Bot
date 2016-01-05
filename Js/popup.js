@@ -3,24 +3,30 @@
 /// <reference path="../Typings/chrome/chrome-cast.d.ts" />
 
 var openDisplay = false, d = -180, h = 0;
+var $selection = $(
+    '<span class="select2-selection" role="combobox" ' +
+    'aria-autocomplete="list" aria-haspopup="true" aria-expanded="false">' +
+    '</span>'
+    );
 
-$(window).load(function(){
-    chrome.storage.sync.get(function(val){
-        if(!val){
-            chrome.storage.sync.set({color: "#D64541"}); //set default color
+$(window).load(function () {
+    chrome.storage.sync.get(function (val) {
+        if (!val) {
+            chrome.storage.sync.set({ color: "#D64541" }); //set default color
             changeColor("#D64541");
         }
-        else{
+        else {
             changeColor(val.color.toString());
         }
     });
-    
+
 });
 $(document).ready(function () {
     var port = chrome.runtime.connect({ name: "readPort" });
     port.postMessage("getData");
     var hasData = false;
     document.getElementById('read-button').addEventListener("click", function () {
+        
         port.postMessage("read");
     });
 
@@ -30,18 +36,18 @@ $(document).ready(function () {
 
             setError($(".read-container"), "No data found on this page", 3000);
 
-        }else if (msg.toString().startsWith("saved")) {
-            var s = msg.toString().slice(5,msg.toString().length);
-            var option = '<option value="'+s+'">'+s+'</option>';
+        } else if (msg.toString().startsWith("saved")) {
+            var s = msg.toString().slice(5, msg.toString().length);
+            var option = '<option value="' + s + '">' + s + '</option>';
             console.log(option);
             $(".dt-select").append(option);
-            
+
             $(".read-container").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
             $("#arrow").click();
-            
-            
-        } else if(msg.toString().startsWith("drop-data")){
-            var s = msg.toString().slice(9,msg.toString().length);
+
+
+        } else if (msg.toString().startsWith("drop-data")) {
+            var s = msg.toString().slice(9, msg.toString().length);
             $(".dt-select").append(s);
         }
         else if ("string" == typeof (msg)) {
@@ -55,7 +61,7 @@ $(document).ready(function () {
             hasData = true;
         }
 
-    //    console.log(msg);
+        //    console.log(msg);
     });
 
     $(".save,.discard").on('click', function (event) {
@@ -91,39 +97,51 @@ $(document).ready(function () {
 
 
 
-
-
 });
 
 
 $('select').select2({
-    templateResult: formatState
+    templateResult: formatState,
+    closeOnSelect: false
 });
-$(".select2-selection").click();
-$(".select2-selection").click();
+$(".remove-data").click(function(e){
+    e.preventDefault();
+});
+
+$(".remove-data").hover(function(){
+    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('enable').tooltip('show');
+},function(){
+    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
+});
+
+
 $('.select2').removeAttr("style");
 $(".select2").on("click", function () {
-
-    $('.select2-results__options').perfectScrollbar();
+    console.log("fired");
+    /*setTimeout(function() {
+        $(".ps-container").css("hidden !important");
+    }, 3000);*/
+    //$(".ps-container").css("hidden !important");
     $('.select2-results__options').perfectScrollbar();
     $('.select2-results__options').perfectScrollbar("update");
+    
 });
 
 $(".color").on("click", function () {
-    var color ;
+    var color;
     if ($(this).hasClass("cg-blue")) {
         changeColor("#2C82C9");
         color = "#2C82C9";
     }
-    else if($(this).hasClass("cg-green")){
+    else if ($(this).hasClass("cg-green")) {
         changeColor("#2ecc71");
         color = "#2ecc71";
     }
-    else if($(this).hasClass("cg-red")){
+    else if ($(this).hasClass("cg-red")) {
         changeColor("#D64541");
         color = "#D64541";
     }
-    chrome.storage.sync.set({color:color});
+    chrome.storage.sync.set({ color: color });
 });
 
 
@@ -132,7 +150,7 @@ $("#arrow").click(function () {
     d = openDisplay ? 0 : 180;
     h = openDisplay ? 0 : 140;
     $("#arrow").velocity({
-        rotateZ: d+"deg"
+        rotateZ: d + "deg"
     }, 500);
     $("#console").velocity({
         height: h + "px"
@@ -140,14 +158,14 @@ $("#arrow").click(function () {
     openDisplay = !openDisplay;
 });
 
-function formatState(state){
+function formatState(state) {
     console.log(state);
-    if(!state.id){return state.text}
+    if (!state.id) { return state.text }
     var $state = $(
-        `<span>`+state.text+`
-             <button class="remove-data">X</button>
+        `<span>` + state.text + `
+             <button class="remove-data glyphicon glyphicon-remove"></button>
         </span>`
-    );
+        );
     return $state;
 }
 
