@@ -54,7 +54,7 @@ $(document).ready(function () {
                 message: "Removed",
                 buttons: {
                     main: {
-                        lable: "OK",
+                        label: "OK",
                         className: "btn-primary"
                     }
                 }
