@@ -256,3 +256,7 @@ header {
     right: 15px;
     outline:none;
 }
+
+.bootbox.modal.fade.bootbox-confirm.in{
+    z-index: 9999;
+}

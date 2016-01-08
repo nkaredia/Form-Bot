@@ -9,7 +9,10 @@
       "commit": "fe563dff3428bac1260d1794e2c2ecf8f097535a"
     },
     "jquery/jquery.d.ts": {
-      "commit": "fe563dff3428bac1260d1794e2c2ecf8f097535a"
+      "commit": "81b951f1ac437d1eb5ff5171a0bfa6c467634b13"
+    },
+    "bootbox/bootbox.d.ts": {
+      "commit": "81b951f1ac437d1eb5ff5171a0bfa6c467634b13"
     }
   }
 }

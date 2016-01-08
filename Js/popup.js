@@ -1,14 +1,11 @@
 /// <reference path="../Typings/chrome.d.ts" />
 /// <reference path="../Typings/chrome/chrome-app.d.ts" />
 /// <reference path="../Typings/chrome/chrome-cast.d.ts" />
-/// <reference path="./bootstrap-dialog.min.js" />
+/// <reference path="../Typings/bootbox/bootbox.d.ts" />
 
 var openDisplay = false, d = -180, h = 0;
-var $selection = $(
-    '<span class="select2-selection" role="combobox" ' +
-    'aria-autocomplete="list" aria-haspopup="true" aria-expanded="false">' +
-    '</span>'
-    );
+var hasData = false;
+var port;
 
 $(window).load(function () {
     chrome.storage.sync.get(function (val) {
@@ -22,15 +19,13 @@ $(window).load(function () {
     });
 
 });
+
+
 $(document).ready(function () {
-    var port = chrome.runtime.connect({ name: "readPort" });
+    port = chrome.runtime.connect({ name: "readPort" });
     port.postMessage("getData");
-    var hasData = false;
-    document.getElementById('read-button').addEventListener("click", function () {
 
-        port.postMessage("read");
-    });
-
+    // PORT EVENTS
     port.onMessage.addListener(function (msg) {
         var that = $(".read-container");
         if (msg == "false") {
@@ -39,7 +34,7 @@ $(document).ready(function () {
 
         } else if (msg.toString().startsWith("saved")) {
             var s = msg.toString().slice(5, msg.toString().length);
-            var option = '<option value="' + s + '">' + s + '</option>';
+            var option = '<option value="' + s + '" class="' + s + '">' + s + '</option>';
             console.log(option);
             $(".dt-select").append(option);
 
@@ -47,14 +42,25 @@ $(document).ready(function () {
             $("#arrow").click();
 
 
-        } else if (msg.toString().startsWith("drop-data")) {
+        }
+        else if (msg.toString().startsWith("drop-data")) {
             var s = msg.toString().slice(9, msg.toString().length);
             $(".dt-select").append(s);
             $("select").select2("val", null);
         }
         else if (msg.toString().startsWith("removed")) {
             var s = msg.toString().slice(7, msg.toString().length);
-
+            bootbox.dialog({
+                message: "Removed",
+                buttons: {
+                    main: {
+                        lable: "OK",
+                        className: "btn-primary"
+                    }
+                }
+            });
+            $("."+s).remove();
+            $("select").select2("val", null);
         }
         else if ("string" == typeof (msg)) {
             $(".data-display").html(msg);
@@ -70,122 +76,83 @@ $(document).ready(function () {
         //    console.log(msg);
     });
 
-    $(".save,.discard").on('click', function (event) {
-        var that = $(this);
-        if (!hasData) {
-            setError(that, "No data to " + $(this).html(), 3000);
-        }
-        else if (hasData) {
-            if (that.hasClass("save")) {
-                if ($("#data-name").val() === "") {
-                    if ($(".read-container").attr("data-original-title") === "") {
-                        setError($(".read-container"), "Please name your data before saving", 3000);
-                    }
-                    else {
-                        $(".read-container").removeClass("orange");
-                        setError($(".read-container"), "Please name your data before saving", 3000);
-                    }
-                } else {
-                    var m = "save";
-                    m += $("#data-name").val();
-                    port.postMessage(m);
-                }
-            }
-            else if (that.hasClass("discard")) {
-                if ($("#data-name").val() === "") {
-
-                }
-            }
-        }
-    });
+    // PORT EVENTS
+}); // Document.ready();
 
 
+// SELECT 2 INIT
 
-    $(".remove-data").click(function (e) {
-        e.preventDefault();
-        BootstrapDialog.show({
-            message: 'Hi Apple!',
-            buttons: [{
-                label: 'Button 1'
-            }, {
-                    label: 'Button 2',
-                    cssClass: 'btn-primary',
-                    action: function () {
-                        alert('Hi Orange!');
-                    }
-                }, {
-                    icon: 'glyphicon glyphicon-ban-circle',
-                    label: 'Button 3',
-                    cssClass: 'btn-warning'
-                }, {
-                    label: 'Close',
-                    action: function (dialogItself) {
-                        dialogItself.close();
-                    }
-                }]
-        });
-        //  var id = $(this).html();
-        //  port.postMessage("remove" + id.toString());
-    });
-
-});
-
-function formatState(state) {
-    /*  console.log(state);
-      if (!state.id) { return state.text }
-        return `<span>` + state.text + `
-               <button class="remove-data glyphicon glyphicon-remove"></button>
-          </span>`;*/
-
-    if (!state.id) return state.text; // optgroup
-        return state.text + '<button class="remove-data glyphicon glyphicon-remove"></button>';
-}
-var select2 = $('select').select2({
+$(".dt-select").select2({
     placeholder: "Choose to insert...",
-    templateResult: formatState,
-    templateSelection: formatState,
-    formatSelection: formatState,
-    formatResult: formatState,
-    closeOnSelect: false,
-    escapeMarkup: function (m) { return m; }
-}).data('select2');
-select2.onSelect = (function (fn) {
-    return function (data, options) {
-        var target;
-
-        if (options != null) {
-            target = $(options.target);
+    templateResult: function (data) {
+        if (data.id == null) {
+            return data.text;
         }
 
-        if (target && target.hasClass('remove-data')) {
-            alert('click!');
-        } else {
-            return fn.apply(this, arguments);
-        }
+        var $option = $("<span></span>");
+        var $preview = $("<button class='remove-data glyphicon glyphicon-remove'></button>");
+        $preview.prop("id", data.id);
+        $preview.on('mouseup', function (evt) {
+            // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
+            // So we need to block the propagation of the `mouseup` event
+            evt.stopPropagation();
+        });
+
+        $preview.on('click', function (evt) {
+            removeData(data.text);
+        });
+
+        $option.text(data.text);
+        $option.append($preview);
+
+        return $option;
     }
-})(select2.onSelect);
+});
 
 
 $('.select2').removeAttr("style");
 $(".select2").on("click", function () {
-
-    console.log("fired");
-    /*setTimeout(function() {
-        $(".ps-container").css("hidden !important");
-    }, 3000);*/
-    //$(".ps-container").css("hidden !important");
     $('.select2-results__options').perfectScrollbar();
     $('.select2-results__options').perfectScrollbar("update");
 });
+// SELECT 2 INIT
 
 
 
-$(".remove-data").hover(function () {
-    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('enable').tooltip('show');
-}, function () {
-    $(".remove-data").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
+//   EVENTS
+
+document.getElementById('read-button').addEventListener("click", function () {
+    port.postMessage("read");
 });
 
+$(".save,.discard").on('click', function (event) {
+    var that = $(this);
+    if (!hasData) {
+        setError(that, "No data to " + $(this).html(), 3000);
+    }
+    else if (hasData) {
+        if (that.hasClass("save")) {
+            if ($("#data-name").val() === "") {
+                if ($(".read-container").attr("data-original-title") === "") {
+                    setError($(".read-container"), "Please name your data before saving", 3000);
+                }
+                else {
+                    $(".read-container").removeClass("orange");
+                    setError($(".read-container"), "Please name your data before saving", 3000);
+                }
+            } else {
+                var m = "save";
+                m += $("#data-name").val();
+                port.postMessage(m);
+            }
+        }
+        else if (that.hasClass("discard")) {
+            if ($("#data-name").val() === "") {
+
+            }
+        }
+    }
+});
 
 
 $(".color").on("click", function () {
@@ -205,7 +172,6 @@ $(".color").on("click", function () {
     chrome.storage.sync.set({ color: color });
 });
 
-
 $("#arrow").click(function () {
 
     d = openDisplay ? 0 : 180;
@@ -219,30 +185,13 @@ $("#arrow").click(function () {
     openDisplay = !openDisplay;
 });
 
-
+//  EVENTS 
 
 function removeData(key) {
-    e.preventDefault();
-    BootstrapDialog.show({
-        message: 'Hi Apple!',
-        buttons: [{
-            label: 'Button 1'
-        }, {
-                label: 'Button 2',
-                cssClass: 'btn-primary',
-                action: function () {
-                    alert('Hi Orange!');
-                }
-            }, {
-                icon: 'glyphicon glyphicon-ban-circle',
-                label: 'Button 3',
-                cssClass: 'btn-warning'
-            }, {
-                label: 'Close',
-                action: function (dialogItself) {
-                    dialogItself.close();
-                }
-            }]
+    bootbox.confirm("Are you sure?", function (result) {
+        if (result) {
+            port.postMessage("remove" + key.toString());
+        }
     });
 }
 function setError(element, errMessage, errDuration) {

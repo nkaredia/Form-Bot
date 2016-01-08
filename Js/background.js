@@ -35,17 +35,9 @@ chrome.runtime.onConnect.addListener(function (port) {
             else if (_message.toString().startsWith("remove")) {
                 var _key = _message.toString().slice(6, _message.toString().length);
                 chrome.storage.local.remove(_key);
-                chrome.storage.local.get(function (data) {
-                    /* for (var key in data) {
-                         option = '<option value="' + key + '">' + key + '</option>';
-                         dom += option;
-                     }*/
-                    port.postMessage("removed" + getData(data));
-                });
+                port.postMessage("removed" + _key);
             }
             else if (_message.toString() == "getData") {
-                var dom = "";
-                var option = "";
                 chrome.storage.local.get(function (data) {
                     /* for (var key in data) {
                          option = '<option value="' + key + '">' + key + '</option>';
@@ -64,7 +56,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 function getData(data) {
     var dom = "";
     for (var key in data) {
-        var option = '<option value="' + key + '">' + key + '</option>';
+        var option = '<option value="' + key + '" class="'+key+'">' + key + '</option>';
         dom += option;
     }
     return dom;
