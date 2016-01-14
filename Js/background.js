@@ -69,7 +69,7 @@ function getData(data) {
 }
 
 function makeDOM(inputs){
-    var dom = "<table>";
+    var dom = "<table class='preview_window_table'>";
     for(var i = 0; i < inputs.length; i++){
         dom += makeRow($(inputs[i]));
     }

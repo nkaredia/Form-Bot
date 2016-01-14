@@ -16,10 +16,12 @@ var FormBotApp;
             this.InitializeApp = function (self) {
                 chrome.storage.sync.get(function (val) {
                     if (!val) {
+                        chrome.storage.sync.set({ color: { color: "#D64541", hover: "#ab3734", odd: "#f6d9d9", even: "#eeb4b3" } });
+                        self.changeColor("#D64541", "#ab3734", "#f6d9d9", "#eeb4b3");
                     }
                     else {
                         // this.changeColor(val.color.color.toString(), val.color.hover.toString());
-                        self.changeColor(val.color.color.toString(), val.color.hover.toString());
+                        self.changeColor(val.color.color.toString(), val.color.hover.toString(), val.color.odd.toString(), val.color.even.toString());
                     }
                 });
                 self.bindChromeEvents(self);
@@ -27,6 +29,7 @@ var FormBotApp;
                 $('.select2').removeAttr("style");
                 self.bindDOMEvents(self);
                 self.port.postMessage("getData");
+                $("#console").perfectScrollbar();
             };
             this.InitializeSelect2 = function (self) {
                 $(".dt-select").select2({
@@ -136,7 +139,9 @@ var FormBotApp;
                     $(".data-display").html(s);
                     if (!self.openDisplay) {
                         $("#arrow").click();
+                        $("#console").perfectScrollbar();
                     }
+                    $("#console").perfectScrollbar('update');
                 }
                 else if ("string" == typeof (msg)) {
                     $(".data-display").html(msg);
@@ -190,22 +195,28 @@ var FormBotApp;
             this.changeTheme = function (e, self) {
                 var color;
                 var hover;
+                var odd;
+                var even;
                 if ($(e.srcElement).hasClass("cg-blue")) {
-                    self.changeColor("#2C82C9", "#2368a0");
                     color = "#2C82C9";
                     hover = "#2368a0";
+                    odd = "#d4e6f4";
+                    even = "#aacde9";
                 }
                 else if ($(e.srcElement).hasClass("cg-green")) {
-                    self.changeColor("#2ecc71", "#24a35a");
                     color = "#2ecc71";
                     hover = "#24a35a";
+                    odd = "#d5f4e2";
+                    even = "#abeac6";
                 }
                 else if ($(e.srcElement).hasClass("cg-red")) {
-                    self.changeColor("#D64541", "#ab3734");
                     color = "#D64541";
                     hover = "#ab3734";
+                    odd = "#f6d9d9";
+                    even = "#eeb4b3";
                 }
-                chrome.storage.sync.set({ color: { color: color, hover: hover } });
+                self.changeColor(color, hover, odd, even);
+                chrome.storage.sync.set({ color: { color: color, hover: hover, odd: odd, even: even } });
             };
             this.arrowClick = function (e, self) {
                 self.d = self.openDisplay ? 0 : 180;
@@ -249,8 +260,8 @@ var FormBotApp;
                     $(element).blur();
                 }, errDuration);
             };
-            this.changeColor = function (color, hover) {
-                var cssStr = "header\n         {\n            background-color: " + color + ";\n         }\n\n       .bottom-section {\n            border-top: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > div:first-child > button:hover {\n                background-color: " + hover + ";\n        }\n\n        .bottom-section > .middle > button {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child > button {\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-selection--single{\n            border: 1px solid " + color + ";\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-search--dropdown .select2-search__field{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-dropdown{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-container--default .select2-results__option--highlighted[aria-selected]{\n            background-color: " + color + ";\n        }\n        \n        .btn-primary{\n            background-color: " + color + ";\n            border-color: " + hover + ";\n        }\n        \n        .btn-primary:hover{\n            background-color: " + hover + ";\n        }\n        \n        .bootbox-ok-button{\n            background-color: " + color + ";\n        }\n        \n        .bootbox-ok-button:hover{\n            background-color: " + hover + ";\n        }\n\n        .modal-body{\n            background-color: " + color + ";\n        }\n        \n        .preview-data:hover,.remove-data:hover{\n            background-color: " + hover + ";\n        }\n\n        ";
+            this.changeColor = function (color, hover, odd, even) {
+                var cssStr = "header\n         {\n            background-color: " + color + ";\n         }\n\n       .bottom-section {\n            border-top: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > div:first-child > button:hover {\n                background-color: " + hover + ";\n        }\n\n        .bottom-section > .middle > button {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child > button {\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-selection--single{\n            border: 1px solid " + color + ";\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-search--dropdown .select2-search__field{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-dropdown{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-container--default .select2-results__option--highlighted[aria-selected]{\n            background-color: " + color + ";\n        }\n        \n        .btn-primary{\n            background-color: " + color + ";\n            border-color: " + hover + ";\n        }\n        \n        .btn-primary:hover{\n            background-color: " + hover + ";\n        }\n        \n        .bootbox-ok-button{\n            background-color: " + color + ";\n        }\n        \n        .bootbox-ok-button:hover{\n            background-color: " + hover + ";\n        }\n\n        .modal-body{\n            background-color: " + color + ";\n        }\n        \n        .preview-data:hover,.remove-data:hover{\n            color: " + hover + ";\n        }\n        \n        .preview_window_table tr:nth-child(odd){\n            background-color: " + odd + ";\n        }\n\n        .preview_window_table tr:nth-child(even){\n            background-color: " + even + ";\n        }\n        \n\n        ";
                 var head = document.head || document.getElementsByTagName('head')[0];
                 //var style = head.getElementsByTagName("style")[0];
                 var style = head.getElementsByTagName("style")[0];

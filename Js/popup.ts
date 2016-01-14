@@ -14,7 +14,9 @@ module FormBotApp {
     interface Color {
         color: {
             color: string,
-            hover: string
+            hover: string,
+            even: string,
+            odd: string
         }
     }
 
@@ -33,18 +35,18 @@ module FormBotApp {
             this.h = 0;
             //this.preview_window_open = false;
             this.InitializeApp(this);
-            
+
         }
 
-        private InitializeApp = (self:FormBot) => {
+        private InitializeApp = (self: FormBot) => {
             chrome.storage.sync.get(function(val: Color) {
                 if (!val) {
-                  //  chrome.storage.sync.set({ color: "#D64541" }); //set default color
-                    //self.changeColor("#D64541");
+                    chrome.storage.sync.set({ color: { color: "#D64541", hover: "#ab3734", odd: "#f6d9d9", even: "#eeb4b3" } });
+                    self.changeColor("#D64541","#ab3734","#f6d9d9","#eeb4b3");
                 }
                 else {
                     // this.changeColor(val.color.color.toString(), val.color.hover.toString());
-                    self.changeColor(val.color.color.toString(), val.color.hover.toString());
+                    self.changeColor(val.color.color.toString(), val.color.hover.toString(), val.color.odd.toString(), val.color.even.toString());
                 }
             });
             self.bindChromeEvents(self);
@@ -52,9 +54,10 @@ module FormBotApp {
             $('.select2').removeAttr("style");
             self.bindDOMEvents(self);
             self.port.postMessage("getData");
+            $("#console").perfectScrollbar();
         }
 
-        private InitializeSelect2 = (self:FormBot) => {
+        private InitializeSelect2 = (self: FormBot) => {
             $(".dt-select").select2({
                 placeholder: "Choose to insert...",
                 templateResult: function(data) {
@@ -72,11 +75,11 @@ module FormBotApp {
                     });
 
                     $preview.find('.remove-data,.preview-data').on('click', function(evt: MouseEvent) {
-                        if($(this).hasClass("remove-data")){
-                            self.removeData(data.text,self);
+                        if ($(this).hasClass("remove-data")) {
+                            self.removeData(data.text, self);
                         }
-                        else if($(this).hasClass("preview-data")){
-                            self.previewData(data.text,self);
+                        else if ($(this).hasClass("preview-data")) {
+                            self.previewData(data.text, self);
                         }
                     });
 
@@ -87,51 +90,51 @@ module FormBotApp {
                 }
             });
         }
-        
-        private previewData(key:string,self:FormBot){
-            self.port.postMessage("preview"+key);
+
+        private previewData(key: string, self: FormBot) {
+            self.port.postMessage("preview" + key);
         }
 
-        private bindChromeEvents = (self:FormBot) => {
-            self.port.onMessage.addListener(function(msg:string){
-                self.chromeMessageListener(msg,self);
+        private bindChromeEvents = (self: FormBot) => {
+            self.port.onMessage.addListener(function(msg: string) {
+                self.chromeMessageListener(msg, self);
             });
         }
 
-        private bindDOMEvents = (self:FormBot) => {
-            document.getElementById("arrow").addEventListener("click", function(e){
-                self.arrowClick(e,self);
+        private bindDOMEvents = (self: FormBot) => {
+            document.getElementById("arrow").addEventListener("click", function(e) {
+                self.arrowClick(e, self);
             });
             Array.prototype.slice.call(document.getElementsByClassName("color"))
                 .forEach(function(el) {
-                    el.addEventListener("click", function(e){
-                        self.changeTheme(e,self);
+                    el.addEventListener("click", function(e) {
+                        self.changeTheme(e, self);
                     });
                 });
             Array.prototype.slice.call(document.getElementsByClassName("save"))
                 .forEach(function(el) {
-                    el.addEventListener("click", function(e){
-                        self.saveData(e,self);
+                    el.addEventListener("click", function(e) {
+                        self.saveData(e, self);
                     });
                 });
             Array.prototype.slice.call(document.getElementsByClassName("discard"))
                 .forEach(function(el) {
-                    el.addEventListener("click", function(e){
-                        self.discardData(e,self);
+                    el.addEventListener("click", function(e) {
+                        self.discardData(e, self);
                     });
                 });
-            document.getElementById("read-button").addEventListener("click", function(e){
-                self.readData(e,self);
+            document.getElementById("read-button").addEventListener("click", function(e) {
+                self.readData(e, self);
             });
             Array.prototype.slice.call(document.getElementsByClassName("select2"))
                 .forEach(function(el) {
-                    el.addEventListener("click", function(e){
-                        self.select2ClickEvent(e,self);
+                    el.addEventListener("click", function(e) {
+                        self.select2ClickEvent(e, self);
                     });
                 });
         }
 
-        chromeMessageListener = (msg: any,self:FormBot) => {
+        chromeMessageListener = (msg: any, self: FormBot) => {
             var that = $(".read-container");
             if (msg == "false") {
 
@@ -144,7 +147,7 @@ module FormBotApp {
                 $(".dt-select").append(option);
 
                 $(".read-container").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
-                if(self.openDisplay){
+                if (self.openDisplay) {
                     $("#arrow").click();
                 }
                 $("#console").html("");
@@ -172,17 +175,19 @@ module FormBotApp {
                 $("." + s).remove();
                 $("select").select2("val", null);
             }
-            else if(msg.toString().startsWith("preview")){
-                var s = msg.toString().slice(7,msg.toString().length);
+            else if (msg.toString().startsWith("preview")) {
+                var s = msg.toString().slice(7, msg.toString().length);
                 $(".data-display").html("");
                 $(".data-display").html(s);
-                if(!self.openDisplay){
+                if (!self.openDisplay) {
                     $("#arrow").click();
+                    $("#console").perfectScrollbar();
                 }
+                $("#console").perfectScrollbar('update');
             }
             else if ("string" == typeof (msg)) {
                 $(".data-display").html(msg);
-                if(!self.openDisplay){
+                if (!self.openDisplay) {
                     $("#arrow").click();
                 }
 
@@ -196,16 +201,16 @@ module FormBotApp {
 
         }
 
-        select2ClickEvent = (e: MouseEvent,self:FormBot) => {
+        select2ClickEvent = (e: MouseEvent, self: FormBot) => {
             $('.select2-results__options').perfectScrollbar();
             $('.select2-results__options').perfectScrollbar("update");
         }
 
-        readData = (e: MouseEvent, self:FormBot) => {
+        readData = (e: MouseEvent, self: FormBot) => {
             self.port.postMessage("read");
         }
 
-        saveData = (e: MouseEvent, self:FormBot) => {
+        saveData = (e: MouseEvent, self: FormBot) => {
             var that = $(e.srcElement);
             if (!self.hasData) {
                 self.setError(e.srcElement.className, "No data to " + $(that).html(), 3000);
@@ -227,7 +232,7 @@ module FormBotApp {
             }
         }
 
-        discardData = (e: MouseEvent,self:FormBot) => {
+        discardData = (e: MouseEvent, self: FormBot) => {
             var that = $(e.srcElement);
             if (!self.hasData) {
                 self.setError(e.srcElement.className, "No data to " + $(that).html(), 3000);
@@ -235,28 +240,34 @@ module FormBotApp {
             else { }
         }
 
-        changeTheme = (e: MouseEvent, self:FormBot) => {
+        changeTheme = (e: MouseEvent, self: FormBot) => {
             var color
             var hover;
+            var odd;
+            var even;
             if ($(e.srcElement).hasClass("cg-blue")) {
-                self.changeColor("#2C82C9", "#2368a0");
                 color = "#2C82C9";
                 hover = "#2368a0";
+                odd = "#d4e6f4";
+                even = "#aacde9";
             }
             else if ($(e.srcElement).hasClass("cg-green")) {
-                self.changeColor("#2ecc71", "#24a35a");
                 color = "#2ecc71";
                 hover = "#24a35a";
+                odd = "#d5f4e2";
+                even = "#abeac6";
             }
             else if ($(e.srcElement).hasClass("cg-red")) {
-                self.changeColor("#D64541", "#ab3734");
                 color = "#D64541";
                 hover = "#ab3734";
+                odd = "#f6d9d9";
+                even = "#eeb4b3";
             }
-            chrome.storage.sync.set({ color: { color: color, hover: hover } });
+            self.changeColor(color, hover,odd,even);
+            chrome.storage.sync.set({ color: { color: color, hover: hover, odd: odd, even: even } });
         }
 
-        arrowClick = (e: MouseEvent, self:FormBot) => {
+        arrowClick = (e: MouseEvent, self: FormBot) => {
             self.d = self.openDisplay ? 0 : 180;
             self.h = self.openDisplay ? 0 : 140;
             $("#arrow").velocity({
@@ -268,7 +279,7 @@ module FormBotApp {
             self.openDisplay = !self.openDisplay;
         }
 
-        removeData = (key: string, self:FormBot) => {
+        removeData = (key: string, self: FormBot) => {
             bootbox.confirm({
                 message: "Are you sure?",
                 callback: function(result: boolean) {
@@ -303,7 +314,7 @@ module FormBotApp {
             }, errDuration);
         }
 
-        changeColor = (color: string, hover: string) => {
+        changeColor = (color: string, hover: string, odd: string, even: string) => {
             var cssStr = `header
          {
             background-color: `+ color + `;
@@ -380,8 +391,17 @@ module FormBotApp {
         }
         
         .preview-data:hover,.remove-data:hover{
-            background-color: `+hover+`;
+            color: `+ hover + `;
         }
+        
+        .preview_window_table tr:nth-child(odd){
+            background-color: `+odd+`;
+        }
+
+        .preview_window_table tr:nth-child(even){
+            background-color: `+even+`;
+        }
+        
 
         `;
 
@@ -407,6 +427,6 @@ module FormBotApp {
     }
 }
 
-(function(){
+(function() {
     new FormBotApp.FormBot();
 })();
