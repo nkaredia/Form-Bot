@@ -1,4 +1,4 @@
-/// <reference path="../Typings/chrome.d.ts" />
+/// <reference path="../Typings/chrome/chrome.d.ts" />
 /// <reference path="../Typings/jquery/jquery.d.ts" />
 //var inputTypes = ["text","number","checkbox","radio","date","color","range","month","week","time","datetime","datetime-local","email","search","tel","url"];
 var response_data = [];

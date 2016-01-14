@@ -10,10 +10,21 @@ interface BootboxAlertOptions {
 	callback?: () => any;
 }
 
+interface BootboxResultButton{
+    label: string;
+    className? : string;
+}
+
+interface BootboxConfirmButtons{
+    cancel?: BootboxResultButton;
+    confirm? : BootboxResultButton;
+}
+
 interface BootboxConfirmOptions {
 	size?: string;
 	message: string;
 	callback: (result: boolean) => any;
+    buttons?: BootboxConfirmButtons;
 }
 
 interface BootboxPromptOptions {

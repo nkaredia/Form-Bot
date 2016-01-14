@@ -3,8 +3,8 @@
 // Definitions by: Matthew Kimber <https://github.com/matthewkimber>, otiai10 <https://github.com/otiai10>, couven92 <https://github.com/couven92>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-/// <reference path='MediaStream.d.ts'/>
-/// <reference path='filesystem.d.ts' />
+/// <reference path='../webrtc/MediaStream.d.ts'/>
+/// <reference path='../filesystem/filesystem.d.ts' />
 
 ////////////////////
 // Global object
@@ -7578,31 +7578,31 @@ declare module chrome.webNavigation {
     }
 
 	interface WebNavigationEvent extends chrome.events.Event {
-		addListener(callback: (details: WebNavigationCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	interface WebNavigationFramedEvent extends WebNavigationEvent {
-		addListener(callback: (details: WebNavigationFramedCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationFramedCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	interface WebNavigationFramedErrorEvent extends WebNavigationFramedEvent {
-		addListener(callback: (details: WebNavigationFramedErrorCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationFramedErrorCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	interface WebNavigationSourceEvent extends WebNavigationEvent {
-		addListener(callback: (details: WebNavigationSourceCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationSourceCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	interface WebNavigationParentedEvent extends WebNavigationEvent {
-		addListener(callback: (details: WebNavigationParentedCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationParentedCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	interface WebNavigationTransitionalEvent extends WebNavigationEvent {
-		addListener(callback: (details: WebNavigationTransitionCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationTransitionCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	interface WebNavigationReplacementEvent extends WebNavigationEvent {
-		addListener(callback: (details: WebNavigationReplacementCallbackDetails, filters?: WebNavigationEventFilter) => void): void;
+		addListener(callback: (details: WebNavigationReplacementCallbackDetails) => void, filters?: WebNavigationEventFilter): void;
     }
 
 	/**

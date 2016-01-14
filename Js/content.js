@@ -1,5 +1,5 @@
-/// <reference path="../Typings/chrome.d.ts" />
-/// <reference path="../Typings/jquery/jquery.d.ts" />
+/// <reference path="../../Typings/chrome/chrome.d.ts" />
+/// <reference path="../../Typings/jquery/jquery.d.ts" />
 var queryString = ":input:visible[type='text'],:input:visible[type='number'],:input:visible[type='checkbox'],:input:visible[type='radio'],:input:visible[type='date'],:input:visible[type='color'],:input:visible[type='range'],:input:visible[type='month'],:input:visible[type='week'],:input:visible[type='time'],:input:visible[type='datetime'],:input:visible[type='datetime-local'],:input:visible[type='email'],:input:visible[type='search'],:input:visible[type='tel'],:input:visible[type='url'],select:visible,textarea:visible";
 chrome.runtime.onMessage.addListener(function (request, sender, sr) {
     if (request.message == "read") {

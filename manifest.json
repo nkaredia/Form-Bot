@@ -9,13 +9,13 @@
       "matches" : [
         "<all_urls>"
       ],
-      "js" : ["Js/jquery.min.js","Js/content.js"],
+      "js" : ["Js/Lib/jquery.min.js","Js/content.js"],
       "run_at": "document_end"
     }
   ],
 
   "background": {
-    "scripts": ["Js/jquery.min.js","Js/background.js"]
+    "scripts": ["Js/Lib/jquery.min.js","Js/background.js"]
   },
   "permissions": [
       "unlimitedStorage",

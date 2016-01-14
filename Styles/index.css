@@ -247,16 +247,54 @@ header {
     border: 1px solid #ab3734;
 }
 
+.option-control-container{
+    float:right;
+}
+
 .remove-data{
     width: 15px;
     height: 15px;
     background-color: transparent;
     border:none;
-    float: right;
+    right: 15px;
+    outline:none;
+    padding-left: 10px;
+}
+
+.preview-data{
+    width: 15px;
+    height: 15px;
+    background-color: transparent;
+    border:none;
     right: 15px;
     outline:none;
 }
 
+#console{
+    position:relative;
+    overflow: hidden !important;
+}
+
 .bootbox.modal.fade.bootbox-confirm.in{
     z-index: 9999;
+}
+
+.btn-primary{
+    background-color: #D64541;
+    border-color: #D64541;
+}
+
+.btn{
+    border-radius: 0px;
+    outline: none;
+}
+
+.modal-content{
+    border-radius: 0px;
+}
+
+.close{
+    opacity: 1;
+    text-shadow: none;
+    font-weight: 100;
 }

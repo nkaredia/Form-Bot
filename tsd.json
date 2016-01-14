@@ -6,13 +6,34 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "select2/select2.d.ts": {
-      "commit": "fe563dff3428bac1260d1794e2c2ecf8f097535a"
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
     },
     "jquery/jquery.d.ts": {
-      "commit": "81b951f1ac437d1eb5ff5171a0bfa6c467634b13"
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
     },
     "bootbox/bootbox.d.ts": {
-      "commit": "81b951f1ac437d1eb5ff5171a0bfa6c467634b13"
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "es6-promise/es6-promise.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "webrtc/MediaStream.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "filewriter/filewriter.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "filesystem/filesystem.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "chrome/chrome.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "bootstrap/bootstrap.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
+    },
+    "velocity-animate/velocity-animate.d.ts": {
+      "commit": "1984ea435fe9e93a012d50db7773db58ae5d494b"
     }
   }
 }
