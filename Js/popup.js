@@ -36,7 +36,7 @@ var FormBotApp;
                             return data.text;
                         }
                         var $option = $("<span></span>");
-                        var $preview = $("<span class='option-control-container'><button class='preview-data glyphicon glyphicon-eye-open'></button><button class='remove-data glyphicon glyphicon-remove'></button></span>");
+                        var $preview = $("<span class='option-control-container'><span class='preview-data glyphicon glyphicon-eye-open'></span><button class='remove-data glyphicon glyphicon-remove'></button></span>");
                         $preview.prop("id", data.id);
                         $preview.on('mouseup', function (evt) {
                             // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
@@ -44,8 +44,11 @@ var FormBotApp;
                             evt.stopPropagation();
                         });
                         $preview.find('.remove-data,.preview-data').on('click', function (evt) {
-                            if (evt.srcElement.className == "remove-data") {
+                            if ($(this).hasClass("remove-data")) {
                                 self.removeData(data.text, self);
+                            }
+                            else if ($(this).hasClass("preview-data")) {
+                                self.previewData(data.text, self);
                             }
                         });
                         $option.text(data.text);
@@ -102,7 +105,9 @@ var FormBotApp;
                     console.log(option);
                     $(".dt-select").append(option);
                     $(".read-container").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
-                    $("#arrow").click();
+                    if (self.openDisplay) {
+                        $("#arrow").click();
+                    }
                     $("#console").html("");
                     $(".data-name").val("");
                 }
@@ -125,9 +130,19 @@ var FormBotApp;
                     $("." + s).remove();
                     $("select").select2("val", null);
                 }
+                else if (msg.toString().startsWith("preview")) {
+                    var s = msg.toString().slice(7, msg.toString().length);
+                    $(".data-display").html("");
+                    $(".data-display").html(s);
+                    if (!self.openDisplay) {
+                        $("#arrow").click();
+                    }
+                }
                 else if ("string" == typeof (msg)) {
                     $(".data-display").html(msg);
-                    $("#arrow").click();
+                    if (!self.openDisplay) {
+                        $("#arrow").click();
+                    }
                     $(that).addClass("orange");
                     $(that).attr("data-original-title", "Give a name to your form data");
                     that.tooltip({ trigger: 'manual' }).tooltip('enable').tooltip('show');
@@ -235,7 +250,7 @@ var FormBotApp;
                 }, errDuration);
             };
             this.changeColor = function (color, hover) {
-                var cssStr = "header\n         {\n            background-color: " + color + ";\n         }\n\n       .bottom-section {\n            border-top: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > div:first-child > button:hover {\n                background-color: " + hover + ";\n        }\n\n        .bottom-section > .middle > button {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child > button {\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-selection--single{\n            border: 1px solid " + color + ";\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-search--dropdown .select2-search__field{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-dropdown{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-container--default .select2-results__option--highlighted[aria-selected]{\n            background-color: " + color + ";\n        }\n        \n        .btn-primary{\n            background-color: " + color + ";\n            border-color: " + hover + ";\n        }\n        \n        .btn-primary:hover{\n            background-color: " + hover + "\n        }\n        \n        .bootbox-ok-button{\n            background-color: " + color + "\n        }\n        \n        .bootbox-ok-button:hover{\n            background-color: " + hover + "\n        }\n\n        .modal-body{\n            background-color: " + color + "\n        }\n\n        ";
+                var cssStr = "header\n         {\n            background-color: " + color + ";\n         }\n\n       .bottom-section {\n            border-top: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > div:first-child > button:hover {\n                background-color: " + hover + ";\n        }\n\n        .bottom-section > .middle > button {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child > button {\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-selection--single{\n            border: 1px solid " + color + ";\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-search--dropdown .select2-search__field{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-dropdown{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-container--default .select2-results__option--highlighted[aria-selected]{\n            background-color: " + color + ";\n        }\n        \n        .btn-primary{\n            background-color: " + color + ";\n            border-color: " + hover + ";\n        }\n        \n        .btn-primary:hover{\n            background-color: " + hover + ";\n        }\n        \n        .bootbox-ok-button{\n            background-color: " + color + ";\n        }\n        \n        .bootbox-ok-button:hover{\n            background-color: " + hover + ";\n        }\n\n        .modal-body{\n            background-color: " + color + ";\n        }\n        \n        .preview-data:hover,.remove-data:hover{\n            background-color: " + hover + ";\n        }\n\n        ";
                 var head = document.head || document.getElementsByTagName('head')[0];
                 //var style = head.getElementsByTagName("style")[0];
                 var style = head.getElementsByTagName("style")[0];
@@ -255,8 +270,12 @@ var FormBotApp;
             this.openDisplay = false;
             this.d = -180;
             this.h = 0;
+            //this.preview_window_open = false;
             this.InitializeApp(this);
         }
+        FormBot.prototype.previewData = function (key, self) {
+            self.port.postMessage("preview" + key);
+        };
         return FormBot;
     })();
     FormBotApp.FormBot = FormBot;

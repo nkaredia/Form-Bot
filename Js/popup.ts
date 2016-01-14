@@ -22,6 +22,7 @@ module FormBotApp {
         port: chrome.runtime.Port;
         hasData: boolean;
         openDisplay: boolean;
+        //preview_window_open:boolean;
         d: number;
         h: number;
         constructor() {
@@ -30,7 +31,9 @@ module FormBotApp {
             this.openDisplay = false;
             this.d = -180;
             this.h = 0;
+            //this.preview_window_open = false;
             this.InitializeApp(this);
+            
         }
 
         private InitializeApp = (self:FormBot) => {
@@ -60,7 +63,7 @@ module FormBotApp {
                     }
 
                     var $option = $("<span></span>");
-                    var $preview = $("<span class='option-control-container'><button class='preview-data glyphicon glyphicon-eye-open'></button><button class='remove-data glyphicon glyphicon-remove'></button></span>");
+                    var $preview = $("<span class='option-control-container'><span class='preview-data glyphicon glyphicon-eye-open'></span><button class='remove-data glyphicon glyphicon-remove'></button></span>");
                     $preview.prop("id", data.id);
                     $preview.on('mouseup', function(evt) {
                         // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
@@ -69,8 +72,11 @@ module FormBotApp {
                     });
 
                     $preview.find('.remove-data,.preview-data').on('click', function(evt: MouseEvent) {
-                        if(evt.srcElement.className == "remove-data"){
+                        if($(this).hasClass("remove-data")){
                             self.removeData(data.text,self);
+                        }
+                        else if($(this).hasClass("preview-data")){
+                            self.previewData(data.text,self);
                         }
                     });
 
@@ -80,6 +86,10 @@ module FormBotApp {
                     return $option;
                 }
             });
+        }
+        
+        private previewData(key:string,self:FormBot){
+            self.port.postMessage("preview"+key);
         }
 
         private bindChromeEvents = (self:FormBot) => {
@@ -134,7 +144,9 @@ module FormBotApp {
                 $(".dt-select").append(option);
 
                 $(".read-container").tooltip({ trigger: 'manual' }).tooltip('disable').tooltip('hide');
-                $("#arrow").click();
+                if(self.openDisplay){
+                    $("#arrow").click();
+                }
                 $("#console").html("");
                 $(".data-name").val("");
 
@@ -160,9 +172,19 @@ module FormBotApp {
                 $("." + s).remove();
                 $("select").select2("val", null);
             }
+            else if(msg.toString().startsWith("preview")){
+                var s = msg.toString().slice(7,msg.toString().length);
+                $(".data-display").html("");
+                $(".data-display").html(s);
+                if(!self.openDisplay){
+                    $("#arrow").click();
+                }
+            }
             else if ("string" == typeof (msg)) {
                 $(".data-display").html(msg);
-                $("#arrow").click();
+                if(!self.openDisplay){
+                    $("#arrow").click();
+                }
 
                 $(that).addClass("orange");
                 $(that).attr("data-original-title", "Give a name to your form data");
@@ -342,19 +364,23 @@ module FormBotApp {
         }
         
         .btn-primary:hover{
-            background-color: `+ hover + `
+            background-color: `+ hover + `;
         }
         
         .bootbox-ok-button{
-            background-color: `+ color + `
+            background-color: `+ color + `;
         }
         
         .bootbox-ok-button:hover{
-            background-color: `+ hover + `
+            background-color: `+ hover + `;
         }
 
         .modal-body{
-            background-color: `+ color + `
+            background-color: `+ color + `;
+        }
+        
+        .preview-data:hover,.remove-data:hover{
+            background-color: `+hover+`;
         }
 
         `;

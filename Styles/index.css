@@ -252,22 +252,31 @@ header {
 }
 
 .remove-data{
-    width: 15px;
-    height: 15px;
+    width: 0px;
+    height: 24px;
     background-color: transparent;
-    border:none;
-    right: 15px;
-    outline:none;
-    padding-left: 10px;
+    border: none;
+    right: 12px;
+    top: -3px;
+    outline: none;
+    padding-left: 7px;
+    padding-right: 19px;
+    padding-top: 0px;
+    border-radius: 100%;
 }
 
 .preview-data{
-    width: 15px;
-    height: 15px;
+    width: 0px;
+    height: 24px;
     background-color: transparent;
-    border:none;
-    right: 15px;
-    outline:none;
+    border: none;
+    right: 12px;
+    top: -2px;
+    outline: none;
+    padding-left: 7px;
+    padding-right: 19px;
+    padding-top: 5px;
+    border-radius: 100%;
 }
 
 #console{
