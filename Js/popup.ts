@@ -11,15 +11,6 @@
 /// <reference path="../Typings/jquery/jquery.d.ts" />
 
 module FormBotApp {
-    interface Color {
-        color: {
-            color: string,
-            hover: string,
-            even: string,
-            odd: string
-        }
-    }
-
     export class FormBot {
         port: chrome.runtime.Port;
         hasData: boolean;
@@ -39,14 +30,14 @@ module FormBotApp {
         }
 
         private InitializeApp = (self: FormBot) => {
-            chrome.storage.sync.get(function(val: Color) {
+            chrome.storage.sync.get(function(val: {ColorStr:string}) {
                 if (!val) {
-                    chrome.storage.sync.set({ color: { color: "#D64541", hover: "#ab3734", odd: "#f6d9d9", even: "#eeb4b3" } });
-                    self.changeColor("#D64541","#ab3734","#f6d9d9","#eeb4b3");
+                    chrome.storage.sync.set({ ColorStr: "D64541_ab3734_f6d9d9_eeb4b3" });
+                    self.changeColor("D64541_ab3734_f6d9d9_eeb4b3".split("_"));
                 }
                 else {
                     // this.changeColor(val.color.color.toString(), val.color.hover.toString());
-                    self.changeColor(val.color.color.toString(), val.color.hover.toString(), val.color.odd.toString(), val.color.even.toString());
+                    self.changeColor(val.ColorStr.toString().split("_"));
                 }
             });
             self.bindChromeEvents(self);
@@ -69,8 +60,6 @@ module FormBotApp {
                     var $preview = $("<span class='option-control-container'><span class='preview-data glyphicon glyphicon-eye-open'></span><button class='remove-data glyphicon glyphicon-remove'></button></span>");
                     $preview.prop("id", data.id);
                     $preview.on('mouseup', function(evt) {
-                        // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
-                        // So we need to block the propagation of the `mouseup` event
                         evt.stopPropagation();
                     });
 
@@ -91,7 +80,7 @@ module FormBotApp {
             });
         }
 
-        private previewData(key: string, self: FormBot) {
+        private previewData = (key: string, self: FormBot) => {
             self.port.postMessage("preview" + key);
         }
 
@@ -241,30 +230,8 @@ module FormBotApp {
         }
 
         changeTheme = (e: MouseEvent, self: FormBot) => {
-            var color
-            var hover;
-            var odd;
-            var even;
-            if ($(e.srcElement).hasClass("cg-blue")) {
-                color = "#2C82C9";
-                hover = "#2368a0";
-                odd = "#d4e6f4";
-                even = "#aacde9";
-            }
-            else if ($(e.srcElement).hasClass("cg-green")) {
-                color = "#2ecc71";
-                hover = "#24a35a";
-                odd = "#d5f4e2";
-                even = "#abeac6";
-            }
-            else if ($(e.srcElement).hasClass("cg-red")) {
-                color = "#D64541";
-                hover = "#ab3734";
-                odd = "#f6d9d9";
-                even = "#eeb4b3";
-            }
-            self.changeColor(color, hover,odd,even);
-            chrome.storage.sync.set({ color: { color: color, hover: hover, odd: odd, even: even } });
+            self.changeColor($(e.srcElement).attr("colors").split("_"));
+            chrome.storage.sync.set({ ColorStr : $(e.srcElement).attr("colors").toString() });
         }
 
         arrowClick = (e: MouseEvent, self: FormBot) => {
@@ -314,13 +281,17 @@ module FormBotApp {
             }, errDuration);
         }
 
-        changeColor = (color: string, hover: string, odd: string, even: string) => {
-            var cssStr = `header
-         {
-            background-color: `+ color + `;
-         }
+        changeColor = (colorStr:string[]) => {
+        var color = "#" + colorStr[0];
+        var hover = "#" + colorStr[1];
+        var odd = "#" + colorStr[2];
+        var even = "#" + colorStr[3];    
+        var cssStr = `header
+        {
+           background-color: `+ color + `;
+        }
 
-       .bottom-section {
+        .bottom-section {
             border-top: 1px solid `+ color + `;
         }
 
