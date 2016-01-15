@@ -42,8 +42,6 @@ var FormBotApp;
                         var $preview = $("<span class='option-control-container'><span class='preview-data glyphicon glyphicon-eye-open'></span><button class='remove-data glyphicon glyphicon-remove'></button></span>");
                         $preview.prop("id", data.id);
                         $preview.on('mouseup', function (evt) {
-                            // Select2 will remove the dropdown on `mouseup`, which will prevent any `click` events from being triggered
-                            // So we need to block the propagation of the `mouseup` event
                             evt.stopPropagation();
                         });
                         $preview.find('.remove-data,.preview-data').on('click', function (evt) {
@@ -60,42 +58,51 @@ var FormBotApp;
                     }
                 });
             };
+            this.previewData = function (key, self) {
+                self.port.postMessage("preview" + key);
+            };
             this.bindChromeEvents = function (self) {
                 self.port.onMessage.addListener(function (msg) {
                     self.chromeMessageListener(msg, self);
                 });
             };
             this.bindDOMEvents = function (self) {
-                document.getElementById("arrow").addEventListener("click", function (e) {
+                /*document.getElementById("arrow").addEventListener("click", function(e) {
                     self.arrowClick(e, self);
-                });
-                Array.prototype.slice.call(document.getElementsByClassName("color"))
-                    .forEach(function (el) {
-                    el.addEventListener("click", function (e) {
-                        self.changeTheme(e, self);
-                    });
-                });
-                Array.prototype.slice.call(document.getElementsByClassName("save"))
-                    .forEach(function (el) {
-                    el.addEventListener("click", function (e) {
-                        self.saveData(e, self);
-                    });
-                });
-                Array.prototype.slice.call(document.getElementsByClassName("discard"))
-                    .forEach(function (el) {
-                    el.addEventListener("click", function (e) {
-                        self.discardData(e, self);
-                    });
-                });
-                document.getElementById("read-button").addEventListener("click", function (e) {
-                    self.readData(e, self);
-                });
-                Array.prototype.slice.call(document.getElementsByClassName("select2"))
-                    .forEach(function (el) {
-                    el.addEventListener("click", function (e) {
-                        self.select2ClickEvent(e, self);
-                    });
-                });
+                });*/
+                $("#arrow").bind("click", function (e) { self.arrowClick(e, self); });
+                /*Array.prototype.slice.call(document.getElementsByClassName("color"))
+                    .forEach(function(el) {
+                        el.addEventListener("click", function(e) {
+                            self.changeTheme(e, self);
+                        });
+                    });*/
+                $(".color").bind("click", function (e) { self.changeTheme(e, self); });
+                /* Array.prototype.slice.call(document.getElementsByClassName("save"))
+                     .forEach(function(el) {
+                         el.addEventListener("click", function(e) {
+                             self.saveData(e, self);
+                         });
+                     });*/
+                $(".save").bind("click", function (e) { self.saveData(e, self); });
+                /*Array.prototype.slice.call(document.getElementsByClassName("discard"))
+                    .forEach(function(el) {
+                        el.addEventListener("click", function(e) {
+                            self.discardData(e, self);
+                        });
+                    });*/
+                $(".discard").bind("click", function (e) { self.discardData(e, self); });
+                /* document.getElementById("read-button").addEventListener("click", function(e) {
+                     self.readData(e, self);
+                 });*/
+                $("#read-button").bind("click", function (e) { self.readData(e, self); });
+                /*Array.prototype.slice.call(document.getElementsByClassName("select2"))
+                    .forEach(function(el) {
+                        el.addEventListener("click", function(e) {
+                            self.select2ClickEvent(e, self);
+                        });
+                    });*/
+                $(".select2").bind("click", function (e) { self.select2ClickEvent(e, self); });
             };
             this.chromeMessageListener = function (msg, self) {
                 var that = $(".read-container");
@@ -193,8 +200,9 @@ var FormBotApp;
                 else { }
             };
             this.changeTheme = function (e, self) {
-                self.changeColor($(e.srcElement).attr("colors").split("_"));
-                chrome.storage.sync.set({ ColorStr: $(e.srcElement).attr("colors").toString() });
+                console.log(e.originalEvent.srcElement);
+                self.changeColor($(e.originalEvent.srcElement).attr("colors").split("_"));
+                chrome.storage.sync.set({ ColorStr: $(e.originalEvent.srcElement).attr("colors").toString() });
             };
             this.arrowClick = function (e, self) {
                 self.d = self.openDisplay ? 0 : 180;
@@ -266,9 +274,6 @@ var FormBotApp;
             //this.preview_window_open = false;
             this.InitializeApp(this);
         }
-        FormBot.prototype.previewData = function (key, self) {
-            self.port.postMessage("preview" + key);
-        };
         return FormBot;
     })();
     FormBotApp.FormBot = FormBot;

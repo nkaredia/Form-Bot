@@ -478,6 +478,7 @@ interface JQueryMouseEventObject extends JQueryInputEventObject {
     pageY: number;
     screenX: number;
     screenY: number;
+    originalEvent: MouseEvent;
 }
 
 interface JQueryKeyEventObject extends JQueryInputEventObject {
@@ -488,6 +489,7 @@ interface JQueryKeyEventObject extends JQueryInputEventObject {
 }
 
 interface JQueryEventObject extends BaseJQueryEventObject, JQueryInputEventObject, JQueryMouseEventObject, JQueryKeyEventObject{
+    originalEvent: MouseEvent;
 }
 
 /*

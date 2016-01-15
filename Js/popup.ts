@@ -91,36 +91,12 @@ module FormBotApp {
         }
 
         private bindDOMEvents = (self: FormBot) => {
-            document.getElementById("arrow").addEventListener("click", function(e) {
-                self.arrowClick(e, self);
-            });
-            Array.prototype.slice.call(document.getElementsByClassName("color"))
-                .forEach(function(el) {
-                    el.addEventListener("click", function(e) {
-                        self.changeTheme(e, self);
-                    });
-                });
-            Array.prototype.slice.call(document.getElementsByClassName("save"))
-                .forEach(function(el) {
-                    el.addEventListener("click", function(e) {
-                        self.saveData(e, self);
-                    });
-                });
-            Array.prototype.slice.call(document.getElementsByClassName("discard"))
-                .forEach(function(el) {
-                    el.addEventListener("click", function(e) {
-                        self.discardData(e, self);
-                    });
-                });
-            document.getElementById("read-button").addEventListener("click", function(e) {
-                self.readData(e, self);
-            });
-            Array.prototype.slice.call(document.getElementsByClassName("select2"))
-                .forEach(function(el) {
-                    el.addEventListener("click", function(e) {
-                        self.select2ClickEvent(e, self);
-                    });
-                });
+            $("#arrow").bind("click",function(e:JQueryMouseEventObject){self.arrowClick(e,self);});
+            $(".color").bind("click",function(e:JQueryMouseEventObject){self.changeTheme(e,self);});
+            $(".save").bind("click",function(e:JQueryMouseEventObject){self.saveData(e,self);});
+            $(".discard").bind("click",function(e:JQueryMouseEventObject){self.discardData(e,self);});
+            $("#read-button").bind("click",function(e:JQueryMouseEventObject){self.readData(e,self);});
+            $(".select2").bind("click",function(e:JQueryMouseEventObject){self.select2ClickEvent(e,self);});
         }
 
         chromeMessageListener = (msg: any, self: FormBot) => {
@@ -190,16 +166,16 @@ module FormBotApp {
 
         }
 
-        select2ClickEvent = (e: MouseEvent, self: FormBot) => {
+        select2ClickEvent = (e: JQueryMouseEventObject, self: FormBot) => {
             $('.select2-results__options').perfectScrollbar();
             $('.select2-results__options').perfectScrollbar("update");
         }
 
-        readData = (e: MouseEvent, self: FormBot) => {
+        readData = (e: JQueryMouseEventObject, self: FormBot) => {
             self.port.postMessage("read");
         }
 
-        saveData = (e: MouseEvent, self: FormBot) => {
+        saveData = (e: JQueryMouseEventObject, self: FormBot) => {
             var that = $(e.srcElement);
             if (!self.hasData) {
                 self.setError(e.srcElement.className, "No data to " + $(that).html(), 3000);
@@ -221,20 +197,22 @@ module FormBotApp {
             }
         }
 
-        discardData = (e: MouseEvent, self: FormBot) => {
+        discardData = (e: JQueryMouseEventObject, self: FormBot) => {
             var that = $(e.srcElement);
             if (!self.hasData) {
                 self.setError(e.srcElement.className, "No data to " + $(that).html(), 3000);
             }
             else { }
         }
-
-        changeTheme = (e: MouseEvent, self: FormBot) => {
-            self.changeColor($(e.srcElement).attr("colors").split("_"));
-            chrome.storage.sync.set({ ColorStr : $(e.srcElement).attr("colors").toString() });
+        
+        
+        changeTheme = (e: JQueryMouseEventObject, self: FormBot) => {
+            console.log(e.originalEvent.srcElement);
+            self.changeColor($(e.originalEvent.srcElement).attr("colors").split("_"));
+            chrome.storage.sync.set({ ColorStr : $(e.originalEvent.srcElement).attr("colors").toString() });
         }
 
-        arrowClick = (e: MouseEvent, self: FormBot) => {
+        arrowClick = (e: JQueryMouseEventObject, self: FormBot) => {
             self.d = self.openDisplay ? 0 : 180;
             self.h = self.openDisplay ? 0 : 140;
             $("#arrow").velocity({
