@@ -32,8 +32,8 @@ module FormBotApp {
         private InitializeApp = (self: FormBot) => {
             chrome.storage.sync.get(function(val: {ColorStr:string}) {
                 if (!val) {
-                    chrome.storage.sync.set({ ColorStr: "D64541_ab3734_f6d9d9_eeb4b3" });
-                    self.changeColor("D64541_ab3734_f6d9d9_eeb4b3".split("_"));
+                    chrome.storage.sync.set({ ColorStr: "D64541_ab3734_f6d9d9_eeb4b3_f6d9d9" });
+                    self.changeColor("D64541_ab3734_f6d9d9_eeb4b3_f6d9d9".split("_"));
                 }
                 else {
                     // this.changeColor(val.color.color.toString(), val.color.hover.toString());
@@ -227,11 +227,7 @@ module FormBotApp {
         removeData = (key: string, self: FormBot) => {
             bootbox.confirm({
                 message: "Are you sure?",
-                callback: function(result: boolean) {
-                    if (result) {
-                        self.port.postMessage("remove" + key);
-                    }
-                },
+                callback: function(result: boolean) {if (result) {self.port.postMessage("remove" + key);}},
                 buttons: {
                     'cancel': {
                         label: 'Cancel',
@@ -263,8 +259,14 @@ module FormBotApp {
         var color = "#" + colorStr[0];
         var hover = "#" + colorStr[1];
         var odd = "#" + colorStr[2];
-        var even = "#" + colorStr[3];    
-        var cssStr = `header
+        var even = "#" + colorStr[3]; 
+        var background = "#" + colorStr[4];   
+        var cssStr = `
+        body{
+            background-color: `+background+`
+        }
+        
+        header
         {
            background-color: `+ color + `;
         }
@@ -287,6 +289,10 @@ module FormBotApp {
 
         .bottom-section > .middle > button {
             background-color: `+ color + `;
+        }
+        
+        .bottom-section > .middle > button:hover {
+            background-color: `+ hover + `;
         }
 
         .bottom-section > div:last-child {
@@ -350,6 +356,16 @@ module FormBotApp {
         .preview_window_table tr:nth-child(even){
             background-color: `+even+`;
         }
+        
+        .write-button{
+            background-color: `+color+`;
+        }
+
+        .write-button:hover{
+            background-color: `+hover+`;
+        }
+        
+
         
 
         `;

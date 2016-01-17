@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Form Bot</title>
+    <link rel="stylesheet" href="Styles/Fonts/stylesheet.css">
     <link rel="stylesheet" href="Styles/bootstrap.min.css">
     <link rel="stylesheet" href="Styles/perfect-scrollbar.min.css">
     <link rel="stylesheet" href="Styles/select2.min.css">
@@ -53,15 +54,16 @@
 <body>
     <header>
         <div class="color-change-container">
-            <button colors='2C82C9_2368a0_d4e6f4_aacde9' class="color cg-blue"></button>
-            <button colors='2ecc71_24a35a_d5f4e2_abeac6' class="color cg-green"></button>
-            <button colors='D64541_ab3734_f6d9d9_eeb4b3' class="color cg-red"></button>
+            <button colors='2C82C9_2368a0_d4e6f4_aacde9_d4e6f4' class="color cg-blue"></button>
+            <button colors='2ecc71_24a35a_d5f4e2_abeac6_eaf9f0' class="color cg-green"></button>
+            <button colors='D64541_ab3734_f6d9d9_eeb4b3_faecec' class="color cg-red"></button>
         </div>
     </header>
     <section class="top-section">
         <select class="dt-select" style="display:none;" tabindex="1">
 
         </select>
+        <button class="write-button">Write</button>
     </section>
     <section class="bottom-section">
         <div class="read-container" data-toggle="tooltip" data-placement="top" title="" data-original-title="hello">
@@ -69,11 +71,12 @@
             <button id="read-button"></button>
         </div>
         <div class="middle">
-            <button class="hvr-grow save">Save</button>
-            <button class="hvr-grow discard">Discard</button>
+            <button class="save">Save</button>
+            <button class="discard">Discard</button>
         </div>
         <div class="data-display-container">
             <div class="data-display-container-header">
+                <span class="data-display-header-text">Preview</span>
                 <button id="arrow">
                     <span class="glyphicon glyphicon-menu-down"></span>
                 </button>

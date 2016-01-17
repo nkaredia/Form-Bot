@@ -16,8 +16,8 @@ var FormBotApp;
             this.InitializeApp = function (self) {
                 chrome.storage.sync.get(function (val) {
                     if (!val) {
-                        chrome.storage.sync.set({ ColorStr: "D64541_ab3734_f6d9d9_eeb4b3" });
-                        self.changeColor("D64541_ab3734_f6d9d9_eeb4b3".split("_"));
+                        chrome.storage.sync.set({ ColorStr: "D64541_ab3734_f6d9d9_eeb4b3_f6d9d9" });
+                        self.changeColor("D64541_ab3734_f6d9d9_eeb4b3_f6d9d9".split("_"));
                     }
                     else {
                         // this.changeColor(val.color.color.toString(), val.color.hover.toString());
@@ -67,41 +67,11 @@ var FormBotApp;
                 });
             };
             this.bindDOMEvents = function (self) {
-                /*document.getElementById("arrow").addEventListener("click", function(e) {
-                    self.arrowClick(e, self);
-                });*/
                 $("#arrow").bind("click", function (e) { self.arrowClick(e, self); });
-                /*Array.prototype.slice.call(document.getElementsByClassName("color"))
-                    .forEach(function(el) {
-                        el.addEventListener("click", function(e) {
-                            self.changeTheme(e, self);
-                        });
-                    });*/
                 $(".color").bind("click", function (e) { self.changeTheme(e, self); });
-                /* Array.prototype.slice.call(document.getElementsByClassName("save"))
-                     .forEach(function(el) {
-                         el.addEventListener("click", function(e) {
-                             self.saveData(e, self);
-                         });
-                     });*/
                 $(".save").bind("click", function (e) { self.saveData(e, self); });
-                /*Array.prototype.slice.call(document.getElementsByClassName("discard"))
-                    .forEach(function(el) {
-                        el.addEventListener("click", function(e) {
-                            self.discardData(e, self);
-                        });
-                    });*/
                 $(".discard").bind("click", function (e) { self.discardData(e, self); });
-                /* document.getElementById("read-button").addEventListener("click", function(e) {
-                     self.readData(e, self);
-                 });*/
                 $("#read-button").bind("click", function (e) { self.readData(e, self); });
-                /*Array.prototype.slice.call(document.getElementsByClassName("select2"))
-                    .forEach(function(el) {
-                        el.addEventListener("click", function(e) {
-                            self.select2ClickEvent(e, self);
-                        });
-                    });*/
                 $(".select2").bind("click", function (e) { self.select2ClickEvent(e, self); });
             };
             this.chromeMessageListener = function (msg, self) {
@@ -218,11 +188,9 @@ var FormBotApp;
             this.removeData = function (key, self) {
                 bootbox.confirm({
                     message: "Are you sure?",
-                    callback: function (result) {
-                        if (result) {
-                            self.port.postMessage("remove" + key);
-                        }
-                    },
+                    callback: function (result) { if (result) {
+                        self.port.postMessage("remove" + key);
+                    } },
                     buttons: {
                         'cancel': {
                             label: 'Cancel',
@@ -251,7 +219,8 @@ var FormBotApp;
                 var hover = "#" + colorStr[1];
                 var odd = "#" + colorStr[2];
                 var even = "#" + colorStr[3];
-                var cssStr = "header\n        {\n           background-color: " + color + ";\n        }\n\n        .bottom-section {\n            border-top: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > div:first-child > button:hover {\n                background-color: " + hover + ";\n        }\n\n        .bottom-section > .middle > button {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child > button {\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-selection--single{\n            border: 1px solid " + color + ";\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-search--dropdown .select2-search__field{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-dropdown{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-container--default .select2-results__option--highlighted[aria-selected]{\n            background-color: " + color + ";\n        }\n        \n        .btn-primary{\n            background-color: " + color + ";\n            border-color: " + hover + ";\n        }\n        \n        .btn-primary:hover{\n            background-color: " + hover + ";\n        }\n        \n        .bootbox-ok-button{\n            background-color: " + color + ";\n        }\n        \n        .bootbox-ok-button:hover{\n            background-color: " + hover + ";\n        }\n\n        .modal-body{\n            background-color: " + color + ";\n        }\n        \n        .preview-data:hover,.remove-data:hover{\n            color: " + hover + ";\n        }\n        \n        .preview_window_table tr:nth-child(odd){\n            background-color: " + odd + ";\n        }\n\n        .preview_window_table tr:nth-child(even){\n            background-color: " + even + ";\n        }\n        \n\n        ";
+                var background = "#" + colorStr[4];
+                var cssStr = "\n        body{\n            background-color: " + background + "\n        }\n        \n        header\n        {\n           background-color: " + color + ";\n        }\n\n        .bottom-section {\n            border-top: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:first-child > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > div:first-child > button:hover {\n                background-color: " + hover + ";\n        }\n\n        .bottom-section > .middle > button {\n            background-color: " + color + ";\n        }\n        \n        .bottom-section > .middle > button:hover {\n            background-color: " + hover + ";\n        }\n\n        .bottom-section > div:last-child {\n            border: 1px solid " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child {\n            background-color: " + color + ";\n        }\n\n        .bottom-section > div:last-child > div:first-child > button {\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-selection--single{\n            border: 1px solid " + color + ";\n            background-color: " + color + ";\n        }\n\n        .select2-container--default .select2-search--dropdown .select2-search__field{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-dropdown{\n            border: 1px solid " + color + ";\n        }\n\n        .select2-container--default .select2-results__option--highlighted[aria-selected]{\n            background-color: " + color + ";\n        }\n        \n        .btn-primary{\n            background-color: " + color + ";\n            border-color: " + hover + ";\n        }\n        \n        .btn-primary:hover{\n            background-color: " + hover + ";\n        }\n        \n        .bootbox-ok-button{\n            background-color: " + color + ";\n        }\n        \n        .bootbox-ok-button:hover{\n            background-color: " + hover + ";\n        }\n\n        .modal-body{\n            background-color: " + color + ";\n        }\n        \n        .preview-data:hover,.remove-data:hover{\n            color: " + hover + ";\n        }\n        \n        .preview_window_table tr:nth-child(odd){\n            background-color: " + odd + ";\n        }\n\n        .preview_window_table tr:nth-child(even){\n            background-color: " + even + ";\n        }\n        \n        .write-button{\n            background-color: " + color + ";\n        }\n\n        .write-button:hover{\n            background-color: " + hover + ";\n        }\n        \n\n        \n\n        ";
                 var head = document.head || document.getElementsByTagName('head')[0];
                 //var style = head.getElementsByTagName("style")[0];
                 var style = head.getElementsByTagName("style")[0];

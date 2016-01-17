@@ -1,3 +1,5 @@
+@import url('roboto-font.css');
+
 body {
     margin: 0;
     padding: 0;
@@ -5,7 +7,7 @@ body {
     height: auto;
     width: 350px;
     color: #000;
-    font-family: cursive;
+    font-family: 'arconregular';
 }
 
 header {
@@ -114,7 +116,7 @@ header {
     }
 
         .bottom-section > div:last-child > div:first-child > button {
-            float: right;
+            float: left;
             height: 30px;
             width: 30px;
             border-radius: 100%;
@@ -150,13 +152,14 @@ header {
     border-radius: 0px;
     border: 1px solid #D64541;
     outline: none;
-    font-family: cursive;
+    font-family: 'arconregular';
     background-color: #D64541;
 }
 
 .select2-container--default .select2-search--dropdown .select2-search__field{
     border: 1px solid #D64541;
     outline: none;
+    font-size: 15.5px;
 }
 
 .select2-dropdown{
@@ -169,11 +172,12 @@ header {
 }
 
 .select2-container{
-    font-family: cursive;
+    font-family: 'arconregular';
 }
 
 .select2-container--default .select2-selection--single .select2-selection__placeholder{
     color:black;
+    font-size: 16px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b{
@@ -285,6 +289,7 @@ header {
 
 .preview_window_table{
     width: 100%;
+    font-size: 16px;
 }
 
 .preview_window_table tr:nth-child(odd){
@@ -308,4 +313,36 @@ header {
     padding-right: 5px;
     padding-top: 2px;
     padding-bottom: 2px;
+}
+
+.write-button{
+    width: 130px;
+    margin-left: calc(50% - 65px);
+    margin-top: 15px;
+    font-size: 17px;
+    outline: none;
+    border: 0px;
+    background-color: #D64541;
+    height: 35px;
+}
+
+.write-button:hover{
+    background-color: #ab3734;
+}
+
+.data-display-header-text{
+    float: left;
+    width: 285px;
+    margin-top: 2px;
+    padding-left: 10px;
+    font-size: 17px;
+}
+
+.select2-results__option > span {
+    font-size: 16.5px;
+}
+
+.glyphicon {
+    margin-top: 3px;
+    font-size: 15px;
 }
